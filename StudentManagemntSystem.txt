@@ -1,0 +1,59 @@
+create database db_Project
+use db_Project
+
+create table Administrator(
+Ad_id varchar(25) not null,
+Username varchar(25) not null,
+Password varchar(30) not null,
+Login_Time datetime not null,
+Logout_Time datetime not null,
+Primary Key(Ad_id)
+);
+
+create table Departments(
+Dept_ID varchar(25) not null,
+Dept_Name varchar(30) not null
+);
+
+create table Course_Type(
+CT_ID varchar(25) not null,
+CT_Name varchar(25) not null
+);
+
+create table Courses(
+C_ID varchar(25) not null,
+C_Name varchar(50) not null,
+CT_ID varchar(25) not null,
+Dep_ID varchar(25) not null,
+);
+
+create table Course_Qualification(
+C_ID varchar(25) not null,
+Qualification varchar(25) not null,
+);
+
+create table Students(
+S_ID varchar(25) not null,
+Name varchar(50) not null,
+Section varchar(50) not null,
+Email_ID varchar(50) not null,
+C_ID varchar(25) not null,
+Dept_ID varchar(25) not null,
+Mobile varchar(25) not null,
+Address varchar(25) not null
+);
+
+create table Assignment_Type(
+Asst_ID varchar(25) not null,
+Asst_Name varchar(30) not null
+);
+
+create table Attendance(
+Ass_ID varchar(25) not null,
+Ass_Name varchar(30) not null,
+S_ID varchar(25) not null,
+Asst_ID varchar(25) not null,
+C_ID varchar(25) not null,
+Marks int not null
+);
+
