@@ -1,59 +1,325 @@
-create database db_Project
-use db_Project
-
+create database dbs_FinalProj
+use dbs_FinalProj
+/*---------------------------------STUDENT MANAGEMENT SYSTEM------------------------------------*/
 create table Administrator(
-Ad_id varchar(25) not null,
+Admin_ID varchar(25) not null,
 Username varchar(25) not null,
 Password varchar(30) not null,
 Login_Time datetime not null,
 Logout_Time datetime not null,
-Primary Key(Ad_id)
+Primary Key(Admin_ID)
 );
+
+insert into Administrator 
+values('101_A','Hamdard_Main','HU123',SYSDATETIME(),SYSDATETIME()),
+('102_B','Hamdard_City','HU_City123',SYSDATETIME(),SYSDATETIME());
 
 create table Departments(
 Dept_ID varchar(25) not null,
-Dept_Name varchar(30) not null
+Dept_Name varchar(30) not null,
+Admin_ID varchar(25) not null,
+Foreign Key(Admin_ID) references Administrator(Admin_ID), 
+Primary Key(Dept_ID)
 );
+
+insert into Departments
+values ('201_M','Heit','101_A'),
+('202_M','HCMD','101_A'),
+('203_M','Pharmacy','101_A'),
+('204_M','HIMS','101_A'),
+('205_M','FEM','101_A'),
+('206_M','Media Science','101_A'),
+('207_C','Dental Colledge','102_B'),
+('209_C','LAW Colledge','102_B');
+
+
+create table Department_Student(
+Dept_ID varchar(25) not null,
+S_ID int not null,
+Foreign Key(Dept_ID) references Departments(Dept_ID),
+Foreign Key(S_ID) references Students(S_ID)
+);
+
 
 create table Course_Type(
-CT_ID varchar(25) not null,
-CT_Name varchar(25) not null
+CT_ID int not null,
+CT_Name varchar(25) not null,
+Primary Key(CT_ID)
 );
+
+insert into Course_Type 
+values (001,'Computer Science'),
+(002,'Electronics'),
+(003,'Electrical Engineering'),
+(004,'Bio-Medical Engineering'),
+(005,'Mechanical Engineering'),
+(006,'Management Sciences'),
+(007,'Dental Sciences'),
+(008,'LAW Sciences');
 
 create table Courses(
-C_ID varchar(25) not null,
-C_Name varchar(50) not null,
-CT_ID varchar(25) not null,
-Dep_ID varchar(25) not null,
+C_ID int not null,
+C_Name varchar(30) not null,
+CT_ID int not null,
+Dept_ID varchar(25) not null,
+Primary Key(C_ID),
+Foreign Key(CT_ID) references Course_Type(CT_ID),
+Foreign Key(Dept_ID) references Departments(Dept_ID)
 );
 
-create table Course_Qualification(
-C_ID varchar(25) not null,
-Qualification varchar(25) not null,
-);
+insert into Courses 
+values (101,'Basics Electronics',002,'201_M'),
+(102,'Electrical Fundamentals',003,'201_M'),
+(103,'FLiud Mechanics',005,'201_M'),
+(104,'Digital Logic Design',003,'201_M'),
+(105,'Data Structures',001,'201_M'),
+(106,'Data Communications',001,'201_M'),
+(107,'Database Systems',001,'201_M'),
+(108,'Entreprenuership',006,'201_M'),
+(109,'Marketing and Management',006,'201_M'),
+(110,'Financial Accounting',006,'201_M'),
+(111,'Introduction to Computing',001,'201_M'),
+(112,'Programming Fundamentals',001,'201_M'),
+(113,'Network Programming',001,'201_M'),
+(114,'Network Security',001,'201_M');
 
 create table Students(
-S_ID varchar(25) not null,
-Name varchar(50) not null,
-Section varchar(50) not null,
-Email_ID varchar(50) not null,
-C_ID varchar(25) not null,
+S_ID int not null,
+S_Name varchar(25) not null,
+Section varchar(25) not null,
+Email_ID varchar(30) not null,
+C_ID int not null,
 Dept_ID varchar(25) not null,
 Mobile varchar(25) not null,
-Address varchar(25) not null
+Std_Address varchar(25) not null,
+S_BloodGroup varchar(5) not null,
+Primary Key(S_ID),
+Foreign Key(C_ID) references Courses(C_ID),
+Foreign Key(Dept_ID) references Departments(Dept_ID),
 );
+
+insert into Students 
+values(201,'Umar Ahmed','A','Umaradmed32@',101,'201_M','0301XXX','POSTA','B+'),
+(202,'Umar Ali','A','Umarali32@',103,'201_M','0330XXX','POSTA','A+'),
+(203,'Sarah Ali','A','Sarahali32@',107,'201_M','0333XXX','POSTA','O-'),
+(204,'Hamza Khan','B','hamzakhan23@',101,'201_M','0330XXX','POSTA','A+'),
+(205,'Ali Akbar','A','aliakbar78@',101,'201_M','0330XX','POSTA','A+'),
+(206,'Sobia Amjad','A','sobiaAmjad36@',107,'201_M','0312XX','POSTA','AB+'),
+(207,'Saba Parveez','B','sabaparvez36@',101,'201_M','0311XX','POSTA','O+'),
+(208,'Sohail Ali','B','sohailamjad37',105,'201_M','0341XX','POSTA','B+'),
+(209,'Wajiha Yaqoob','A','wajihayaqoob12@',103,'201_M','0345XX','POSTA','A-'),
+(210,'Daniyal Shahid','A','daniyal123@',104,'201_M','0316XX','POSTA','O-'),
+(211,'Warda Maqsood','A','warda505@',112,'201_M','0313XX','POSTA','O-');
+
+create table Courses_Student(
+C_ID int not null,
+C_Name varchar(30) not null,
+S_ID int not null,
+S_Name varchar(25) not null,
+Foreign Key(C_ID) references Courses(C_ID),
+Foreign Key(S_ID) references Students(S_ID),
+);
+
+insert into Courses_Student
+values(101,'Basics Electronics',201,'Umar Ahmed'),
+(103,'Fluid Mechanics',202,'Umar Ali'),
+(104,'Digital Logic Design',210,'Daniyal Shahid'),
+(101,'Basics Electronics',204,'Hamza Ali'),
+(101,'Basics Electronics',205,'Ali Akbar'),
+(103,'Fluid Mechanics',209,'Wajiha Yaqoob'),
+(112,'Programming Fundamental',211,'Warda Maqsood'),
+(107,'Database Systems',203,'Sarah Ali'),
+(101,'Basics Electronics',206,'Sobia Amjad'),
+(105,'Data Structure',208,'Sohail Ali');
 
 create table Assignment_Type(
-Asst_ID varchar(25) not null,
-Asst_Name varchar(30) not null
+Asst_ID int not null,
+Asst_Name varchar(30) not null,
+Primary Key(Asst_ID)
 );
+
+insert into Assignment_Type 
+values(300,'Fluid Mechanics'),
+(301,'Introduction to computing'),
+(302,'Network Programming'),
+(303,'Financial Accounting'),
+(304,'Database Systems'),
+(305,'Digital logic design'),
+(306,'Network Security'),
+(307,'Basics Electronics'),
+(308,'Data Structures');
+
+create table Assignment(
+Ass_ID int not null,
+Ass_Name varchar(30) not null,
+Asst_ID int not null,
+Asst_Name varchar(25) not null,
+C_ID int not null,
+Primary Key(Ass_ID),
+Foreign Key(Asst_ID) references Assignment_Type(Asst_ID),
+Foreign Key(C_ID) references Courses(C_ID),
+);
+
+insert into Assignment
+values(400,'Pressure and its Measurements',300,'Fluid Mechanics',103),
+(401,'Cyber Attacks and its Security',302,'Network Programming',113),
+(402,'Balance Sheet',303,'Financial Accounting',110),
+(403,'Income Statment',303,'Financial Accounting',110),
+(404,'Merrge Sorting',308,'Data Structure',105),
+(405,'Terminologies in Electronics',307,'Basics Electronics',101),
+(406,'Boolean algebra',305,'Digital logic design',104),
+(407,'Normalization',304,'Database Systems',107);
+
+create table Student_Assignment(
+S_ID int not null,
+S_Name varchar(25) not null,
+Ass_ID int not null,
+Ass_Name varchar(30) not null,
+Marks int not null
+Foreign Key(S_ID) references Students(S_ID),
+Foreign Key(Ass_ID) references Assignment(Ass_ID)
+);
+
+insert into Student_Assignment
+values(201,'Umar Ahmed',405,'Terminologies in Electronics',5),
+(205,'Ali Akbar',405,'Terminologies in Electronics',3),
+(202,'Umar Ali',400,'Pressure and its Measurements',4),
+(209,'Wajiha Yaqoob',400,'Pressure and its Measurements',5),
+(203,'Sarah Ali',406,'Normalization',2);
+
+
+select cast(AVG(Marks) as decimal) from Student_Assignment
+ select * from Student_Assignment
 
 create table Attendance(
-Ass_ID varchar(25) not null,
-Ass_Name varchar(30) not null,
-S_ID varchar(25) not null,
-Asst_ID varchar(25) not null,
-C_ID varchar(25) not null,
-Marks int not null
+Attend_ID int not null,
+Attend_Date datetime not null,
+S_ID int not null,
+S_Name varchar(25) not null,
+C_ID int not null,
+P_or_A varchar(5) not null,
+Total_Classes int not null,
+Foreign Key(S_ID) references Students(S_ID),
+Foreign Key(C_ID) references Courses(C_ID),
+Primary Key(Attend_ID)
 );
 
+insert into Attendance
+values(500,SYSDATETIME(),201,'Umar Ahmed',101,'P',5),
+(501,SYSDATETIME(),204,'Hamza Khan',101,'A',5),
+(502,SYSDATETIME(),205,'Ali Akbar',101,'A',5),
+(503,SYSDATETIME(),203,'Sarah Ali',107,'P',4),
+(504,SYSDATETIME(),206,'Sobia Amjad',107,'P',4),
+(505,SYSDATETIME(),209,'Wajiha Yaqoob',103,'P',3),
+(506,SYSDATETIME(),202,'Umar Ali',103,'P',3),
+(507,SYSDATETIME(),210,'Daniyal Shahid',104,'P',5);
+
+/*----------------------------------------Query Begins---------------------------------------*/  
+/*-----------------Apply Trigger---------------------------*/
+create table TriggerDemo_History_Std
+(
+S_ID int not null,
+ParentID int,
+Time_Stamped date not null,
+PerformedAction varchar(50),
+)
+Go
+
+create Trigger AfterInsertTrigger10
+ON Students
+After Insert
+AS
+Insert Into TriggerDemo_History_Std values(212,1,SYSDATETIME(),'Insert')
+GO
+insert into Students values(212,'Roman Khalid','B','romiah98@',102,'202_M','0314XX','ABX Address','OA-')
+GO
+
+create Trigger After_Update_Trigger
+ON Students 
+After Update
+As
+Insert Into TriggerDemo_History_Std values(212,1,'Update')
+GO
+Update Students set S_BloodGroup = 'R+' where S_ID = 211
+select * from TriggerDemo_History_Std
+select * from Students
+
+
+/*-----------------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------JOINS Query-----------------------------------------------------*/
+---Common Data in Both Students and Attendance table can be showed
+select ST.S_ID,ST.S_Name,A.Attend_ID,P_or_A From Students ST
+INNER JOIN Attendance A
+ON ST.S_ID=A.S_ID
+---Below All Students with respective Course data showed
+select ST.S_ID,ST.S_Name,C.C_ID,C.Dept_ID From Courses C 
+RIGHT JOIN Students ST
+ON C.C_ID = ST.C_ID
+---Below All Courses with respective Student data showed
+select ST.S_ID,ST.S_Name,C.C_ID,C.Dept_ID From Students ST 
+RIGHT JOIN Courses C
+ON C.C_ID = ST.C_ID
+
+/*----------------------------------GROUP BY-----------------------------*/
+select Dept_ID ,count(*) as 'Departments' from Students Group By Dept_ID --no of depatments in Student table
+
+select S_Name,Marks from Student_Assignment
+where Marks IN
+(select Marks from Student_Assignment Group By Marks Having Marks < 5)
+
+select C_ID,count(S_Name) from Students
+where C_ID =101 
+GROUP BY C_ID
+
+select S_ID,Max(Marks) from Student_Assignment
+Group By S_ID
+Having Max(Marks)>3
+/*--------------------------------INDEXING--------------------------------*/
+create nonclustered index  IND_MARKS_STD_NAME
+on Student_Assignment(S_ID asc, Marks asc);
+select * from Student_Assignment
+
+execute sp_helpindex Student_Assignment
+
+create nonclustered index IND_Attend
+on Attendance(S_Name,Total_Classes)
+
+execute sp_helpindex Attendance
+
+select S_Name from Attendance
+where S_Name='Umar Ahmed'
+/*--------------------------------Create View--------------------------------*/
+create view depviewww
+as
+select * from Departments
+where Dept_ID = '201_M'
+select * from depviewww
+
+/*-----------------------------Stored Procedure----------------------------*/
+create proc pc 
+as
+begin
+select S_ID,S_Name from Students
+end
+PC;
+
+----craete Stored Procedure with parameter-----
+create proc pc2 @S_Name varchar(25)
+as
+begin
+select * from Students
+where S_Name = @S_Name
+end
+PC2 'Hamza Khan';
+
+/*-----------------------------LiKE TOP----------------------------*/
+select S_Name from Students 
+where S_Name Like 'H%' 
+
+select top 3 Marks,S_Name as 'Top_3_Students' from Student_Assignment
+
+
+select s.S_ID,c.C_ID,s.S_Name from Students s
+left join  Courses c
+on c.C_ID=s.S_ID
